@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.use(bodyParser.json());
 
+
 router.get('/contracts/:profileId', async (req, res) => {
     const { profileId } = req.params;
     try {
@@ -20,13 +21,12 @@ router.get('/contracts/:profileId', async (req, res) => {
     }
 });
 
+
 router.post('/deposit/:profileId', async (req, res) => {
-    const { profileId } = req.params;
+    const { profileId } = req.params; 
     let { amount } = req.body;
 
-    console.log('Received amount:', amount);  
-
-    amount = parseFloat(amount);
+    amount = parseFloat(amount); 
 
     if (isNaN(amount) || amount <= 0) {
         return res.status(400).json({
@@ -35,10 +35,8 @@ router.post('/deposit/:profileId', async (req, res) => {
     }
 
     try {
-        
         const profile = await Profile.findByPk(profileId);
 
-        
         if (!profile) {
             return res.status(404).json({
                 message: `Deposit not processed. Profile with ID ${profileId} does not exist.`,
@@ -50,15 +48,12 @@ router.post('/deposit/:profileId', async (req, res) => {
 
         res.json({
             message: `Deposit of ${amount} successfully added to profile ${profile.name}.`,
-            profile,
+            profile,  
         });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while processing the deposit.' });
     }
 });
-
-
-
 
 router.get('/jobs/unpaid/:contractId', async (req, res) => {
     const { contractId } = req.params;
@@ -78,3 +73,5 @@ router.get('/jobs/unpaid/:contractId', async (req, res) => {
 });
 
 module.exports = router;
+
+
